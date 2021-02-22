@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+
+  <title>Twitter</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <style>
+    #wrapper {
+      overflow-x: hidden;
+   }
+  
+  #sidebar-wrapper {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+  }
+
+  #content-header {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    left: 16%;
+    z-index: 1;
+  }
+
+  #post-content-area {
+    width: 64%;
+    margin: 5% auto;
+  }
+
+
+  #sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+  }
+  
+  #sidebar-wrapper .list-group {
+    width: 15rem;
+  }
+  
+  #page-content-wrapper {
+    min-width: 100vw;
+  }
+  
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+  }
+  
+  @media (min-width: 768px) {
+    #sidebar-wrapper {
+      margin-left: 0;
+      width: 26%;
+      z-index: 2;
+    }
+  
+    #page-content-wrapper {
+      min-width: 0;
+      width: 100%;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+      margin-left: -15rem;
+    }
+  }
+
+  #trend-area{
+    position: fixed;
+    top: 0px;
+    right: 0%;
+    width: 26%;
+    height: 100%;
+    background-color: #f8f9fa;
+  }
+
+  #trend-post-area {
+    margin-top: 80px;
+    padding: 12px 24px 12px;
+  }
+
+  .post-area {
+    width: 70%;
+    margin: 80px auto;
+  }
+
+  .title-of-this-app {
+    text-decoration: none;
+    font-size: 36px;
+    font-weight: bold;
+  }
+
+  .title-of-this-app:hover {
+    text-decoration: none;
+  }
+
+  #post-btn {
+    width: 72%;
+    margin: 12px auto;
+    border-radius: 20px;
+  }
+
+  .signup {
+    width: 64%;
+    margin: 40px auto;
+  }
+
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    padding-top: 120px;
+  }
+
+  .login-to-signup {
+    text-align: center;
+  }
+
+  .form-post {
+    width: 76%;
+    margin: 0 auto;
+  }
+  
+  .article-title {
+    color: #444444;
+  }
+  
+  a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+  }
+  
+  .article-content {
+    white-space: pre-line;
+  }
+  
+  .article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+  }
+  
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3
+  }
+  
+  .article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+  }
+
+  .not-posted {
+    text-align: center;
+    margin-top: 140px;
+    font-size: 20px;
+  }
+
+  .more-detail {
+    color: #444444;
+  }
+
+  .likes-and-date {
+    font-size: 12px;
+  }
+
+  .user-profile-username {
+    text-align: center;
+    padding-top: 40px;
+  }
+
+  .delete-post {
+    text-decoration: none;
+    color: #444444;
+    padding-left: 16px;
+  }
+
+  .comment-post {
+    text-decoration: none;
+    color: #444444;
+    padding-left: 16px;
+  }
+
+  .comment-header {
+    text-align: center;
+    margin: 24px auto;
+  }
+
+  .sidebar-username {
+    text-align: center;
+    margin: 12px auto;
+    font-size: 20px;
+  }
+
+  .trend-header {
+    font-weight: bold;
+    font-size: 32px;
+  }
+
+  .list-group > a {
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .navbar-nav {
+    font-weight: bold;
+    font-size: 20px;
+    margin: auto;
+  }
+
+  .page-header {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .search-posts {
+    margin: 24px auto;
+    text-align: center;
+    width: 72%;
+  }
+  </style>
+
+</head>
+
+<body>
+
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading"><a href="{{ url_for('app.home') }}" class="title-of-this-app"> Twitter </a></div>
+      {% if current_user.is_authenticated %}
+        <div class="list-group list-group-flush">
+          <h5 class="sidebar-username">{{ current_user.username }}さんようこそ！</h5>
+          <a href="{{ url_for('app.user_profile', user_id=current_user.id) }}" class="list-group-item list-group-item-action bg-light">自分の投稿</a>
+          <a href="{{ url_for('app.search_posts') }}" class="list-group-item list-group-item-action bg-light">投稿を検索する</a>
+          <a href="{{ url_for('app.liked_posts', user_id=current_user.id) }}" class="list-group-item list-group-item-action bg-light">いいねした投稿</a>
+          <a href="{{ url_for('app.signup') }}" class="list-group-item list-group-item-action bg-light">アカウントの作成</a>
+          <a href="{{ url_for('app.post') }}" class="btn btn-primary btn active" id="post-btn" role="button" aria-pressed="true">投稿</a>
+        </div>
+      {% else %}
+        <div class="list-group list-group-flush">
+          <a href="{{ url_for('app.search_posts') }}" class="list-group-item list-group-item-action bg-light">投稿を検索する</a>
+          <a href="{{ url_for('app.signup') }}" class="list-group-item list-group-item-action bg-light">アカウントの作成</a>
+          <a href="{{ url_for('app.post') }}" class="btn btn-primary btn active" id="post-btn" role="button" aria-pressed="true">投稿</a>
+        </div>
+      {% endif %}
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light" id="content-header">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('app.home') }}" >Home</a>
+              </li>
+              {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('app.logout') }}">ログアウト</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('app.login') }}">ログイン</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid" id="post-content-area">
+        <div class="post-area">
+          {% block content %}{% endblock content %}
+        </div>
+      </div>
+      <div class="col-md-3" id="trend-area">
+        {% block trend %}
+        {% endblock trend %}
+      </div>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+
+</html>

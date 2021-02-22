@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="page-header">いいねした投稿一覧</h2>
+{% if liked_posts %}
+  {% for liked_post in liked_posts %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><a href="{{ url_for('app.user_profile', user_id=liked_post.user_id) }}">{{ liked_post.author }}</a></h5>
+        <p class="card-text">{{ liked_post.content }}</p>
+        <p class="card-text likes-and-date">いいね: {{ liked_post.like_count }}　　　{{ liked_post.date_posted }}</p>
+        <a href="{{ url_for('app.post_detail', post_id=liked_post.id) }}" class="more-detail" >もっと見る</a>
+      </div>
+    </div>
+  {% endfor %}
+
+{% else %}
+  <p class="not-posted">いいねした投稿はありません</p>
+{% endif %}
+{% endblock content %}

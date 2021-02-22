@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if posts %}
+  {% for post in posts.items %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><a href="{{ url_for('app.user_profile', user_id=post.user_id) }}">{{ post.author }}</a></h5>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text likes-and-date">いいね: {{ post.like_count }}　　　{{ post.date_posted }}</p>
+        <a href="{{ url_for('app.post_detail', post_id=post.id) }}" class="more-detail" >もっと見る</a>
+      </div>
+    </div>
+  {% endfor %}
+
+{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page_num %}
+    {% if posts.page == page_num %}
+      <a class="btn btn-primary mb-4" href="{{ url_for('app.home', page=page_num) }}">{{ page_num }}</a>
+    {% else %}
+      <a class="btn btn-outline-primary mb-4" href="{{ url_for('app.home', page=page_num) }}">{{ page_num }}</a>
+    {% endif %}
+  {% else %}
+    ...
+  {% endif %}
+{% endfor %}
+
+{% else %}
+  <p class="not-posted">投稿がありません</p>
+{% endif %}
+{% endblock content %}
+
+{% block trend %}
+<div class="content-section" id="trend-post-area">
+  <h3 class="trend-header" id="trend-header">トレンド</h3>
+  <p class='text-muted'>人気な投稿を確認しよう
+    <ul class="list-group">
+      {% for trend_post in trend_posts %}
+        <li class="list-group-item list-group-item-light">
+          <p><a href="{{ url_for('app.user_profile', user_id=trend_post.user_id) }}" style="font-weight: bold;">{{ trend_post.author }}</a>  さんの投稿　　いいね: {{ trend_post.like_count }}件</p>
+          <a href="{{ url_for('app.post_detail', post_id=trend_post.id) }}">見る</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </p>
+</div>
+{% endblock trend %}

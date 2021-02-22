@@ -1,0 +1,16 @@
+{% from '_formhelpers.html' import render_field %}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="posting-area">
+  <form method="POST" class="form-post">
+    <dl>
+      {{ form.csrf_token }}
+      {{ render_field(form.author, value=current_user.username) }}
+      {{ render_field(form.content, class="form-control", placeholder='コンテンツ') }}
+      {{ render_field(form.user_id, value=current_user.id) }}
+      {{ form.submit(class="btn btn-primary") }}
+    </dl>
+  </form>
+</div>
+{% endblock content %}

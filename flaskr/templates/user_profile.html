@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="user-profile-username">
+  <h3 class="page-header">{{ user.username }}の投稿一覧</h3>
+</div>
+<div>
+{% if posts %}
+  {% for post in posts.items %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><a href="">{{ post.author }}</a></h5>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text">いいね: {{ post.like_count }}　　　{{ post.date_posted }}</p>
+        <a href="{{ url_for('app.post_detail', post_id=post.id) }}" class="more-detail" >もっと見る</a>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+<p class="not-posted">投稿がありません</p>
+{% endif %}
+
+{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+{% if page_num %}
+  {% if posts.page == page_num %}
+    <a class="btn btn-primary mb-4" href="{{ url_for('app.home', page=page_num) }}">{{ page_num }}</a>
+  {% else %}
+    <a class="btn btn-outline-primary mb-4" href="{{ url_for('app.home', page=page_num) }}">{{ page_num }}</a>
+  {% endif %}
+{% else %}
+  ...
+{% endif %}
+{% endfor %}
+</div>
+{% endblock content %}

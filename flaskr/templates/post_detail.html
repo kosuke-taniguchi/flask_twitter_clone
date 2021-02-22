@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"><a href="{{ url_for('app.user_profile', user_id=post.user_id) }}">{{ post.author }}</a></h5>
+    <p class="card-text">{{ post.content }}</p>
+    {% if current_user.is_authenticated %}
+      {% if current_user.has_liked_post(post) %}
+      <a href="{{ url_for('app.likes', post_id=post.id, action='unlike') }}" class="btn btn-outline-danger">いいね : {{ post.like_count }}</a>
+      {% else %}
+      <a href="{{ url_for('app.likes', post_id=post.id, action='like') }}" class="btn btn-outline-danger">いいね : {{ post.like_count }}</a>
+      {% endif %}
+    {% else %}
+      <a href="{{ url_for('app.login') }}" class="btn btn-outline-danger">いいね : {{ post.like_count }}</a>
+    {% endif %}
+    {% if current_user.username == post.author %}
+      <a href="{{ url_for('app.delete_post', post_id=post.id) }}" class="btn btn-outline-secondary">投稿の削除</a>
+    {% endif %}
+    <a href="{{ url_for('app.comment', post_id=post.id) }}" class="btn btn-outline-secondary">コメント</a>
+    <p class="card-text likes-and-date">{{ post.date_posted }}</p>
+  </div>
+</div>
+
+<h3 class="comment-header">コメント一覧</h3>
+
+{% if comments %}
+  {% for comment in comments %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{{ url_for('app.user_profile', user_id=post.user_id) }}">{{ comment.author }}</a></h5>
+      <p class="card-text">{{ comment.content }}</p>
+      <p class="card-text likes-and-date">{{ comment.date_posted }}</p>
+      <a href="{{ url_for('app.comment_delete', post_id=post.id, comment_id=comment.id) }}" class="delete-post" >削除</a>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+コメントはまだありません
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="search-posts">
+  <h2 class="page-header">投稿検索</h2>
+  <form class="form my-2 my-lg-0" method="POST">
+    {{ csrf_token }}
+    {{ render_field(form.posts_contents, class="form-control mr-sm-2", placeholder="コンテンツで検索" ) }}
+    {{ form.submit(class="btn btn-outline-success my-2 my-sm-0") }}
+  </form>
+</div>
+<div class="posts-list">
+  {% if posts %}
+    {% for post in posts %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><a href="{{ url_for('app.user_profile', user_id=post.user_id) }}">{{ post.author }}</a></h5>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text likes-and-date">いいね: {{ post.like_count }}　　　{{ post.date_posted }}</p>
+        <a href="{{ url_for('app.post_detail', post_id=post.id) }}" class="more-detail" >もっと見る</a>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+  <p>投稿を探しましょう！</p>
+  {% endif %}
+</div>
+
+{% endblock content %}
